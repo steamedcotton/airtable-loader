@@ -1,0 +1,15 @@
+{
+    "baseId": "appmtqyIlK7hZ4kwL",
+    "tableName": "Contacts",
+    "maxRecords": 200,
+    "fields": [
+        {
+            "airtableName": "Name",
+            "mapToName": "name"
+        },
+        {
+            "airtableName": "Phone",
+            "mapToName": "phone"
+        }
+    ]
+}
