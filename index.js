@@ -1,55 +1,59 @@
 const { getOptions } = require('loader-utils');
 const validateOptions = require('schema-utils');
-const Airtable = require('airtable');
+const _ = require('lodash');
+const chalk = require('chalk');
+const filesize = require('filesize');
+const AirtableDb = require('./lib/AirtableDb');
 
 const optionsSchema = {
     type: 'object',
     properties: {
         apiKey: {
             type: 'string'
+        },
+        showStats: {
+            type: 'boolean'
         }
     }
 };
 
+function byteCount(s) {
+    return encodeURI(s).split(/%..|./).length - 1;
+}
+
 const airtableLoader = function (source) {
     const callback = this.async();
-    const options = getOptions(this);
-    validateOptions(optionsSchema, options, 'Airtable Loader');
 
-    const tableOptions = JSON.parse(source);
+    const runLoader = async () => {
+        const options = getOptions(this);
+        validateOptions(optionsSchema, options, 'Airtable Loader');
 
-    const { apiKey } = options;
-    const { baseId, tableName, fields, maxRecords } = tableOptions;
-    const base = new Airtable({ apiKey }).base(baseId);
+        const tableOptions = JSON.parse(source);
 
-    const data = [];
+        const { apiKey, showStats = false } = options;
+        const airtableDb = new AirtableDb(apiKey);
+        try {
+            const records = await airtableDb.fetchAirtableData(tableOptions);
+            const jsonParsedResults = JSON.stringify(records);
+            const sizeInBytes = byteCount(jsonParsedResults);
 
-    base(tableName)
-        .select({
-            maxRecords,
-            view: 'Grid view'
-        })
-        .eachPage(
-            (records, fetchNextPage) => {
-                records.forEach((record) => {
-                    const row = {};
-                    fields.forEach(({ mapToName = '', airtableName = 'unknown' }) => {
-                        row[mapToName || airtableName]  = record.get(airtableName);
-                    });
-                    data.push(row);
-                });
+            if (showStats) {
+                console.log('\n');
+                console.log(chalk.blue('----- airtable-loader stats -----'));
+                console.log(`${chalk.blue('Result Size:')} ${filesize(sizeInBytes)}`);
+                console.log(`${chalk.blue('Requests to Airtable:')} ${airtableDb.getRequestCounter()}`);
+                console.log(`${chalk.blue('Cache Hits:')} ${airtableDb.getCachedHitsCounter()}`);
+                console.log('\n');
+            }
 
-                fetchNextPage();
-            },
-            (err) => {
-                if (err) {
-                    console.error(err);
-                    return;
-                }
+            // TODO: convert to JSON.parse for larger sets of data
+            callback(null, `export default ${JSON.stringify(records)}`);
+        } catch (err) {
+            callback(err);
+        }
+    };
 
-                // TODO: convert to JSON.parse for larger sets of data
-                callback(err, `export default ${JSON.stringify(data)}`);
-            });
+    runLoader();
 };
 
 module.exports = airtableLoader;

@@ -32,7 +32,8 @@ module.exports = {
                 test: /\.airtable/,
                 loader: path.resolve('../index.js'),
                 options: {
-                    apiKey: AIRTABLE_API_KEY
+                    apiKey: AIRTABLE_API_KEY,
+                    showStats: true
                 }
             }
         ]

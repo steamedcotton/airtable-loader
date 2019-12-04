@@ -1,6 +1,6 @@
 {
   "name": "airtable-loader",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,9 @@
   "license": "ISC",
   "dependencies": {
     "airtable": "^0.8.0",
+    "bluebird": "^3.7.2",
+    "chalk": "^3.0.0",
+    "filesize": "^6.0.1",
     "loader-utils": "^1.2.3",
     "schema-utils": "^2.6.1"
   }
