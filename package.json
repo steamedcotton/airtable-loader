@@ -1,14 +1,15 @@
 {
   "name": "airtable-loader",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["airtable", "webpack"],
+  "author": "Eric Erickson",
+  "repository": "https://github.com/steamedcotton/airtable-loader",
+  "license": "MIT",
   "dependencies": {
     "airtable": "^0.8.0",
     "bluebird": "^3.7.2",
