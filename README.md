@@ -86,6 +86,24 @@ The .airtable file should be in JSON format
 }
 ```
 
+### Caching complete tables
+
+To save on requests to Airtable, you can have the loader retrieve the whole table and cache it.  The loader will then look in the cache before making a request to Airtable for the individual record.
+
+```json
+{
+    "baseId": "appmtqyIlK7hZ4kwL",
+    "tableName": "Contacts",
+     "cacheTables": [
+         {
+             "tableName": "Contacts",
+             "baseId": "appmtqyIlK7hZ4kwL"
+         }
+     ],
+    "fields": ...
+}
+```
+
 ## Use in code
 
 ```javascript

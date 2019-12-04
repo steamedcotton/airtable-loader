@@ -2,6 +2,12 @@
     "baseId": "appmtqyIlK7hZ4kwL",
     "tableName": "Contacts",
     "maxRecords": 200,
+    "cacheTables": [
+        {
+            "tableName": "Contacts",
+            "baseId": "appmtqyIlK7hZ4kwL"
+        }
+    ],
     "fields": [
         {
             "name": "Name",
