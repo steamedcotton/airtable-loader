@@ -4,12 +4,26 @@
     "maxRecords": 200,
     "fields": [
         {
-            "airtableName": "Name",
+            "name": "Name",
             "mapToName": "name"
         },
         {
-            "airtableName": "Phone",
+            "name": "Phone",
             "mapToName": "phone"
+        },
+        {
+            "name": "Skills",
+            "mapToName": "skills",
+            "resolve": {
+                "tableName": "Contacts",
+                "baseId": "appmtqyIlK7hZ4kwL",
+                "fields": [
+                    {
+                        "name": "Skill Name",
+                        "mapToName": "skillName"
+                    }
+                ]
+            }
         }
     ]
 }

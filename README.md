@@ -21,7 +21,7 @@ module.exports = {
                     test: /\.airtable/,
                     loader: 'airtable-loader',
                     options: {
-                       apiKey: 'AIRTABLE_API_KEY'
+                       apiKey: 'AIRTABLE_API_KEY' 
                     }
                 }
             ]
@@ -41,12 +41,46 @@ The .airtable file should be in JSON format
     "maxRecords": 200,
     "fields": [
         {
-            "airtableName": "Name",
+            "name": "Name",
             "mapToName": "name"
         },
         {
-            "airtableName": "Phone",
+            "name": "Phone",
             "mapToName": "phone"
+        }
+    ]
+}
+```
+
+### Joining tables (resolving ids)
+
+```json
+{
+    "baseId": "appmtqyIlK7hZ4kwL",
+    "tableName": "Contacts",
+    "maxRecords": 2,
+    "fields": [
+        {
+            "name": "Name",
+            "mapToName": "name"
+        },
+        {
+            "name": "Phone",
+            "mapToName": "phone"
+        },
+        {
+            "name": "Skills",
+            "mapToName": "skills",
+            "resolve": {
+                "tableName": "Contacts",
+                "baseId": "appmtqyIlK7hZ4kwL",
+                "fields": [
+                    {
+                        "name": "Skill Name",
+                        "mapToName": "skillName"
+                    }
+                ]
+            }
         }
     ]
 }
