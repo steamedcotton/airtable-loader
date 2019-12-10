@@ -40,6 +40,7 @@ const airtableLoader = function (source) {
             if (showStats) {
                 console.log('\n');
                 console.log(chalk.blue('----- airtable-loader stats -----'));
+                console.log(`${chalk.blue('Source File:')} ${this.resourcePath}`);
                 console.log(`${chalk.blue('Result Size:')} ${filesize(sizeInBytes)}`);
                 console.log(`${chalk.blue('Requests to Airtable:')} ${airtableDb.getRequestCounter()}`);
                 console.log(`${chalk.blue('Cache Hits:')} ${airtableDb.getCachedHitsCounter()}`);
