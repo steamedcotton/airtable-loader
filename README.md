@@ -1,6 +1,6 @@
 # airtable-loader
 
-This is a simple loader that will load data from an [Airtable](https://airtable.com/) table at build time using the settings provided in a `.airtable` file.
+This is a [webpack loader](https://webpack.js.org/loaders/) that will load data from an [Airtable](https://airtable.com/) table at build time using the settings provided in a `.airtable` file.  This then "packs" in the data into the Javascript that is produced.
 
 ## Install
 
@@ -9,6 +9,49 @@ This is a simple loader that will load data from an [Airtable](https://airtable.
 or
 
 ```npm install --save-dev airtable-loader```
+
+
+## The .airtable File
+
+The `.airtable` file contains the settings that will be used to generate the data to pack.  Referencing the file (i.e. `import myData from 'mydata.airtable';`) will create a Javascript object that contains the data from the Airtable table(s).
+
+
+### Params
+
+| Parameter Name         | Description                                                                    |
+|------------------------|--------------------------------------------------------------------------------| 
+| baseId                 | The Airtable base id (can be found in the API documentation for the Workspace) |
+| tableName              | The name of the Airtable table                                                 |
+| maxRecords             | The maximum number of records limit the Airtable API request                   |
+| includeFilterFieldName | The mapToName field (a boolean value) to filter what the data is produced      |
+| cacheTables            | Array of cacheTables that the loader will pre-fetch and cache in an effort to reduce the number of requests to Airtable |
+| fields                 | Array of field mappings from Airtable to the Javascript object that's produced |
+
+#### cacheTables
+
+| Parameter Name         | Description                                                                    |
+|------------------------|--------------------------------------------------------------------------------| 
+| baseId                 | The Airtable base id (can be found in the API documentation for the Workspace) |
+| tableName              | The name of the Airtable table                                                 |
+
+#### fields
+
+| Parameter Name         | Description                                                                    |
+|------------------------|--------------------------------------------------------------------------------| 
+| name                   | The exact name of the column in Aritable                                       |
+| mapToName              | The name that will be used in the Javascript object that's produced            |
+| resolve                | Used to resolve fields that have arrays of Airtable Ids that reference another table. |
+
+#### resolve
+
+| Parameter Name         | Description                                                                    |
+|------------------------|--------------------------------------------------------------------------------|  
+| baseId                 | The Airtable base id (can be found in the API documentation for the Workspace) |
+| tableName              | The name of the Airtable table                                                 |
+| maxRecords             | The maximum number of records limit the Airtable API request                   |
+| includeFilterFieldName | The mapToName field (a boolean value) to filter what the data is produced      |
+| fields                 | Array of field mappings from Airtable to the Javascript object that's produced |                               |
+
 
 ## Example webpack configuration  
 
@@ -129,3 +172,4 @@ const App = () => {
 ReactDOM.render(<App/>, document.getElementById('app'));
 
 ```
+
