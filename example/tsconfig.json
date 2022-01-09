@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "allowJs": true,
+    "noEmit": false,
+    "isolatedModules": true,
+    "strict": false,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "./dist",
+    "lib": ["es6", "dom"],
+    "jsx": "react",
+    "esModuleInterop": true,
+    "types": ["react"],
+    "baseUrl": ".",
+    "sourceMap": true
+  }
+}
