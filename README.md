@@ -1,74 +1,82 @@
 # airtable-loader
 
-This is a [webpack loader](https://webpack.js.org/loaders/) that will load data from an [Airtable](https://airtable.com/) table at build time using the settings provided in a `.airtable` file.  This then "packs" in the data into the Javascript that is produced.
+This is a [webpack loader](https://webpack.js.org/loaders/) that will load data from an [Airtable](https://airtable.com/)
+table at build time using the settings provided in a `.airtable` file. This then "packs" in the data into the Javascript
+that is produced.
+
+This can be useful for data you want to inject at build time from Airtable.
+
+## Updates
+
+01/09/2021: The latest version of this project has been updated to work with Webpack 5 and I have **not** tested it on
+older versions. See the updated example for details: [example webpack project](./example)
 
 ## Install
 
-```yarn add -D airtable-loader```
+`yarn add -D airtable-loader`
 
 or
 
-```npm install --save-dev airtable-loader```
-
+`npm install --save-dev airtable-loader`
 
 ## The .airtable File
 
-The `.airtable` file contains the settings that will be used to generate the data to pack.  Referencing the file (i.e. `import myData from 'mydata.airtable';`) will create a Javascript object that contains the data from the Airtable table(s).
-
+The `.airtable` file contains the settings that will be used to generate the data to pack. Referencing the file (i.e.
+`import myData from 'mydata.airtable';`) will create a Javascript object that contains the data from the Airtable
+table(s).
 
 ### Params
 
-| Parameter Name         | Description                                                                    |
-|------------------------|--------------------------------------------------------------------------------| 
-| baseId                 | The Airtable base id (can be found in the API documentation for the Workspace) |
-| tableName              | The name of the Airtable table                                                 |
-| maxRecords             | The maximum number of records limit the Airtable API request                   |
-| includeFilterFieldName | The mapToName field (a boolean value) to filter what the data is produced      |
+| Parameter Name         | Description                                                                                                             |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| baseId                 | The Airtable base id (can be found in the API documentation for the Workspace)                                          |
+| tableName              | The name of the Airtable table                                                                                          |
+| maxRecords             | The maximum number of records limit the Airtable API request                                                            |
+| includeFilterFieldName | The mapToName field (a boolean value) to filter what the data is produced                                               |
 | cacheTables            | Array of cacheTables that the loader will pre-fetch and cache in an effort to reduce the number of requests to Airtable |
-| fields                 | Array of field mappings from Airtable to the Javascript object that's produced |
+| fields                 | Array of field mappings from Airtable to the Javascript object that's produced                                          |
 
 #### cacheTables
 
-| Parameter Name         | Description                                                                    |
-|------------------------|--------------------------------------------------------------------------------| 
-| baseId                 | The Airtable base id (can be found in the API documentation for the Workspace) |
-| tableName              | The name of the Airtable table                                                 |
+| Parameter Name | Description                                                                    |
+| -------------- | ------------------------------------------------------------------------------ |
+| baseId         | The Airtable base id (can be found in the API documentation for the Workspace) |
+| tableName      | The name of the Airtable table                                                 |
 
 #### fields
 
-| Parameter Name         | Description                                                                    |
-|------------------------|--------------------------------------------------------------------------------| 
-| name                   | The exact name of the column in Aritable                                       |
-| mapToName              | The name that will be used in the Javascript object that's produced            |
-| resolve                | Used to resolve fields that have arrays of Airtable Ids that reference another table. |
+| Parameter Name | Description                                                                           |
+| -------------- | ------------------------------------------------------------------------------------- |
+| name           | The exact name of the column in Airtable                                              |
+| mapToName      | The name that will be used in the Javascript object that's produced                   |
+| resolve        | Used to resolve fields that have arrays of Airtable Ids that reference another table. |
 
 #### resolve
 
 | Parameter Name         | Description                                                                    |
-|------------------------|--------------------------------------------------------------------------------|  
+| ---------------------- | ------------------------------------------------------------------------------ |
 | baseId                 | The Airtable base id (can be found in the API documentation for the Workspace) |
 | tableName              | The name of the Airtable table                                                 |
 | maxRecords             | The maximum number of records limit the Airtable API request                   |
 | includeFilterFieldName | The mapToName field (a boolean value) to filter what the data is produced      |
-| fields                 | Array of field mappings from Airtable to the Javascript object that's produced |                               |
+| fields                 | Array of field mappings from Airtable to the Javascript object that's produced |
 
-
-## Example webpack configuration  
+## Example webpack configuration
 
 ```javascript
 module.exports = {
-    entry: './src/index.js',
-    module: {
-            rules: [
-                {
-                    test: /\.airtable/,
-                    loader: 'airtable-loader',
-                    options: {
-                       apiKey: 'AIRTABLE_API_KEY' 
-                    }
-                }
-            ]
-    }
+  entry: './src/index.js',
+  module: {
+    rules: [
+      {
+        test: /\.airtable/,
+        loader: 'airtable-loader',
+        options: {
+          apiKey: 'AIRTABLE_API_KEY'
+        }
+      }
+    ]
+  }
 };
 ```
 
@@ -77,21 +85,22 @@ module.exports = {
 The .airtable file should be in JSON format
 
 **contacts.airtable**
+
 ```json
 {
-    "baseId": "<TABLE BASE ID>",
-    "tableName": "Contacts",
-    "maxRecords": 200,
-    "fields": [
-        {
-            "name": "Name",
-            "mapToName": "name"
-        },
-        {
-            "name": "Phone",
-            "mapToName": "phone"
-        }
-    ]
+  "baseId": "<TABLE BASE ID>",
+  "tableName": "Contacts",
+  "maxRecords": 200,
+  "fields": [
+    {
+      "name": "Name",
+      "mapToName": "name"
+    },
+    {
+      "name": "Phone",
+      "mapToName": "phone"
+    }
+  ]
 }
 ```
 
@@ -99,39 +108,40 @@ The .airtable file should be in JSON format
 
 ```json
 {
-    "baseId": "appmtqyIlK7hZ4kwL",
-    "tableName": "Contacts",
-    "maxRecords": 2,
-    "fields": [
-        {
-            "name": "Name",
-            "mapToName": "name"
-        },
-        {
-            "name": "Phone",
-            "mapToName": "phone"
-        },
-        {
-            "name": "Skills",
-            "mapToName": "skills",
-            "resolve": {
-                "tableName": "Contacts",
-                "baseId": "appmtqyIlK7hZ4kwL",
-                "fields": [
-                    {
-                        "name": "Skill Name",
-                        "mapToName": "skillName"
-                    }
-                ]
-            }
-        }
-    ]
+  "baseId": "appmtqyIlK7hZ4kwL",
+  "tableName": "Contacts",
+  "maxRecords": 2,
+  "fields": [
+    {
+      "name": "Name",
+      "mapToName": "name"
+    },
+    {
+      "name": "Phone",
+      "mapToName": "phone"
+    },
+    {
+      "name": "Skills",
+      "mapToName": "skills",
+      "resolve": {
+        "tableName": "Contacts",
+        "baseId": "appmtqyIlK7hZ4kwL",
+        "fields": [
+          {
+            "name": "Skill Name",
+            "mapToName": "skillName"
+          }
+        ]
+      }
+    }
+  ]
 }
 ```
 
 ### Caching complete tables
 
-To save on requests to Airtable, you can have the loader retrieve the whole table and cache it.  The loader will then look in the cache before making a request to Airtable for the individual record.
+To save on requests to Airtable, you can have the loader retrieve the whole table and cache it. The loader will then
+look in the cache before making a request to Airtable for the individual record.
 
 ```json
 {
@@ -155,21 +165,40 @@ import ReactDOM from 'react-dom';
 import contacts from './contacts.airtable';
 
 const Contacts = () => {
-    return contacts.map((contact, i) => <li key={i}>{contact.name}: {contact.phone}</li>);
+  return contacts.map((contact, i) => (
+    <li key={i}>
+      {contact.name}: {contact.phone}
+    </li>
+  ));
 };
 
 const App = () => {
-    return (
-        <div>
-            <h1>Contacts</h1>
-            <ul>
-                <Contacts />
-            </ul>
-        </div>
-    );
+  return (
+    <div>
+      <h1>Contacts</h1>
+      <ul>
+        <Contacts />
+      </ul>
+    </div>
+  );
 };
 
-ReactDOM.render(<App/>, document.getElementById('app'));
-
+ReactDOM.render(<App />, document.getElementById('app'));
 ```
 
+## Typescript
+
+If you are using this loader in a project writen in Typescript, you will need to create a module definition for the
+`airtable` (or what ever you name it) file type. Something like this in your `@types` directory:
+
+```typescript
+// airtable.d.ts
+declare module '*.airtable' {
+  const content: any;
+  export default content;
+}
+```
+
+## TODOs
+
+- [ ] Convert loader code to Typescript
