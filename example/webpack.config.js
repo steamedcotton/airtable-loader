@@ -5,37 +5,34 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { AIRTABLE_API_KEY } = process.env;
 
 module.exports = {
-    entry: './src/index.js',
-    mode: 'production',
-    output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'example.js'
-    },
-    plugins: [new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, 'src/index.html')
-    })],
-    module: {
-        rules: [
-            {
-                test: /\.(js|jsx)$/,
-                loader: 'babel-loader',
-                options: {
-                    presets: ['@babel/preset-react', '@babel/preset-env', {
-                        plugins: [
-                            '@babel/plugin-proposal-class-properties',
-                            '@babel/plugin-syntax-dynamic-import'
-                        ]
-                    }]
-                }
-            },
-            {
-                test: /\.airtable/,
-                loader: path.resolve('../index.js'),
-                options: {
-                    apiKey: AIRTABLE_API_KEY,
-                    showStats: true
-                }
-            }
-        ]
-    }
+  entry: './src/index.tsx',
+  mode: 'development',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'example.js'
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, 'src/index.html')
+    })
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.([jt]sx?)?$/,
+        use: 'ts-loader'
+      },
+      {
+        test: /\.airtable/,
+        // Replace the following with:
+        //   loader: 'airtable-loader',
+        // when running in your own project
+        loader: path.resolve('../index.js'),
+        options: {
+          apiKey: AIRTABLE_API_KEY,
+          showStats: true
+        }
+      }
+    ]
+  }
 };
